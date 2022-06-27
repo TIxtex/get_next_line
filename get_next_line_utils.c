@@ -12,47 +12,47 @@ size_t	ft_strlen(const char *s)
 
 void	*ft_calloc(size_t num_items, size_t size_item)
 {
-	register void	*new;
+	register char	*new;
 	register size_t	bytes;
 	register size_t	x;
 
 	bytes = num_items * size_item;
-	new = malloc(bytes);
+	new = (char *) malloc(bytes);
 	if (NULL != new)
 	{
 		x = ZERO;
 		while (x < bytes)
 		{
-			new[x] = ZERO;
+			new[x] = '\0';
 			x++;
 		}
 	}
-	return (new);
+	return ((void *) new);
 }
 
-char	gnl_substr(char const *s, unsigned int start, size_t len, int flag)
+char	*gnl_substr(char const *s, unsigned int start, size_t len, int flag)
 {
-	register char const	*sub_start;
-	register char		*new;
-	register size_t		size;
-	register char		start;
+	t_gnl_substr	data;
 
 	if (NULL == s)
 		return (NULL);
 	if ('\0' == *s || start > ft_strlen(s))
 		return ((char *) ft_calloc(TRUE, sizeof(char)));
-	start = s;
+	data.start = s;
 	s += start;
-	sub_start = s;
-	size = TRUE;
+	data.sub_start = s;
+	data.size = TRUE;
 	while ('\0' != *(s++) && ZERO != len--)
-		size++;
-	new = (char *) ft_calloc(size, sizeof(char));
-	if (NULL != new)
-		ft_strlcpy(new, sub_start, size);
+		data.size++;
+	data.new = (char *) ft_calloc(data.size + 1, sizeof(char));
+	if (NULL != data.new)
+	{
+		while (ZERO < data.size--)
+			data.new[data.size] = data.sub_start[data.size];
+	}
 	if (TRUE == flag)
-		free(start);
-	return (new);
+		free((void *) data.start);
+	return (data.new);
 }
 
 char	*ft_strjoin_f1_f2(char *s1, char *s2)
@@ -70,9 +70,9 @@ char	*ft_strjoin_f1_f2(char *s1, char *s2)
 	start = nw_str;
 	to_free_s1 = s1;
 	to_free_s2 = s2;
-	while (NULL != *s1)
+	while ('\0' != *s1)
 		*(nw_str++) = *(s1++);
-	while (NULL != *s2)
+	while ('\0' != *s2)
 		*(nw_str++) = *(s2++);
 	free(to_free_s1);
 	to_free_s1 = NULL;

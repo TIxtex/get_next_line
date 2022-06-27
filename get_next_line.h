@@ -3,11 +3,19 @@
 # include <unistd.h>
 # include <stdlib.h>
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 64
+#  define BUFFER_SIZE 42
 # endif
 # define ZERO 0
-#define FALSE ZERO
+# define FALSE 0
 # define TRUE 1
+
+typedef struct s_gnl_substr
+{
+	char const	*sub_start;
+	char const	*start;
+	char		*new;
+	size_t		size;
+}	t_gnl_substr;
 
 typedef struct s_list
 {
@@ -18,7 +26,7 @@ typedef struct s_list
 
 typedef struct s_data
 {
-	struct s_list	list;
+	struct s_list	*list;
 	int				fd;
 	int				flag;
 	int				r;
@@ -27,12 +35,12 @@ typedef struct s_data
 }	t_data;
 
 /**	get_next_line	**/
-int		get_next_line(int fd);
+char	*get_next_line(int fd);
 
 /**	get_next_line_utils	**/
 size_t	ft_strlen(const char *s);
 void	*ft_calloc(size_t num_items, size_t size_item);
-char	*ft_substr(char const *s, unsigned int start, size_t len, int flag)
+char	*gnl_substr(char const *s, unsigned int start, size_t len, int flag);
 char	*ft_strjoin_f1_f2(char *s1, char *s2);
 int		gnl_isnl(char *str);
 

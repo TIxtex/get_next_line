@@ -14,7 +14,7 @@ static t_list	*gnl_listnew(int fd, char *content)
 	return (new);
 }
 
-static void	gnl_listadd(t_data *data, t_list *add)//
+static void	gnl_listadd(t_data *data, t_list *add)
 {
 	t_list	*aux;
 	t_list	*prev;
@@ -25,8 +25,13 @@ static void	gnl_listadd(t_data *data, t_list *add)//
 		prev = aux;
 		aux = aux->next;
 	}
-	add->next = aux;
-	prev->next = add;
+	if (-1 == aux->fd)
+		aux->next = add;
+	else
+	{
+		add->next = aux;
+		prev->next = add;
+	}
 }
 
 static void	gnl_check_fd(t_data *data)
@@ -35,7 +40,7 @@ static void	gnl_check_fd(t_data *data)
 	t_list	*prev;
 
 	aux = data->list;
-	while (data->fd < aux->fd && NULL != aux->next)
+	while (data->fd > aux->fd && NULL != aux->next)
 	{
 		prev = aux;
 		aux = aux->next;
@@ -62,7 +67,12 @@ static void	gnl_core(t_data	*data)
 			free(data->aux);
 			if (-1 == data->r)
 			{
-				free(data->line)
+				free(data->line);
+				data->line = NULL;
+			}
+			else if ('\0' == *(data->line))
+			{
+				free(data->line);
 				data->line = NULL;
 			}
 			return ;
@@ -70,23 +80,23 @@ static void	gnl_core(t_data	*data)
 		data->line = ft_strjoin_f1_f2(data->line, data->aux);
 		data->flag = gnl_isnl(data->line);
 	}
-	if (ft_strlen(data->line) != data->flag)
+	if ((int) ft_strlen(data->line) != data->flag + TRUE)
 	{
-		ft_listadd(data, ft_listnew(data->fd, gnl_substr(data->line,
+		gnl_listadd(data, gnl_listnew(data->fd, gnl_substr(data->line,
 			data->flag + 1, ft_strlen(data->line), FALSE)));
-		data->line = gnl_substr(data->line, ZERO, flag + 1, TRUE);
+		data->line = gnl_substr(data->line, ZERO, data->flag, TRUE);
 	}
 }
 
-int	get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	t_data			data;
 	static t_list	list = {-1, NULL, NULL};
 
 	if (ZERO > fd)
-		return (-1);
+		return (NULL);
 	data.fd = fd;
-	data->list = &list;
+	data.list = (t_list *)&list;
 	data.line = (char *) ft_calloc(TRUE, sizeof(char));
 	gnl_check_fd(&data);
 	gnl_core(&data);

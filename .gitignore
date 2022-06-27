@@ -1,3 +1,5 @@
+# TEST
+gnl-station-tester
 # Prerequisites
 *.d
 
@@ -37,6 +39,7 @@
 *.hex
 
 # Debug files
+.vscode
 *.dSYM/
 *.su
 *.idb
