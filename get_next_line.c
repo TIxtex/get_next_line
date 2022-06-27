@@ -61,18 +61,18 @@ static int	gnl_core(t_data	*d)
 {
 	while (-1 == d->flag)
 	{
-		d->aux = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		if (NULL == d->aux)
+		d->read_line = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+		if (NULL == d->read_line)
 			return (TRUE);
-		d->r = read(d->fd, d->aux, BUFFER_SIZE);
+		d->r = read(d->fd, d->read_line, BUFFER_SIZE);
 		if (1 > d->r)
 		{
-			free(d->aux);
+			free(d->read_line);
 			if ('\0' == *(d->line) || -1 == d->r)
 				return (TRUE);
 			return (FALSE);
 		}
-		d->line = ft_strjoin_f1_f2(d->line, d->aux);
+		d->line = ft_strjoin_f1_f2(d->line, d->read_line);
 		d->flag = gnl_isnl(d->line);
 	}
 	if ((int) LEN(d->line) != d->flag + 1)
@@ -90,11 +90,11 @@ char	*get_next_line(int fd)
 
 	if (ZERO > fd)
 		return (NULL);
-	data.fd = fd;
 	data.list = (t_list *)&list;
+	data.fd = fd;
 	data.line = (char *) ft_calloc(TRUE, sizeof(char));
+	data.read_line = NULL;
 	gnl_check_fd(&data);
-	data.aux = NULL;
 	data.flag  = gnl_isnl(data.line);
 	if (TRUE == gnl_core(&data))
 	{

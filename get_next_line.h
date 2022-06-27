@@ -31,7 +31,7 @@ typedef struct s_data
 	int				flag;
 	int				r;
 	char			*line;
-	char			*aux;
+	char			*read_line;
 }	t_data;
 
 /**	get_next_line	**/
