@@ -1,4 +1,7 @@
 #include "get_next_line.h"
+#define LEN ft_strlen
+#define LNEW gnl_listnew
+#define LADD gnl_listadd
 
 static t_list	*gnl_listnew(int fd, char *content)
 {
@@ -54,38 +57,30 @@ static void	gnl_check_fd(t_data *data)
 	}
 }
 
-static void	gnl_core(t_data	*data)
+static int	gnl_core(t_data	*d)
 {
-	data->aux = NULL;
-	data->flag = gnl_isnl(data->line);
-	while (-1 == data->flag)
+	while (-1 == d->flag)
 	{
-		data->aux = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		data->r = read(data->fd, data->aux, BUFFER_SIZE);
-		if (1 > data->r)
+		d->aux = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+		if (NULL == d->aux)
+			return (TRUE);
+		d->r = read(d->fd, d->aux, BUFFER_SIZE);
+		if (1 > d->r)
 		{
-			free(data->aux);
-			if (-1 == data->r)
-			{
-				free(data->line);
-				data->line = NULL;
-			}
-			else if ('\0' == *(data->line))
-			{
-				free(data->line);
-				data->line = NULL;
-			}
-			return ;
+			free(d->aux);
+			if (-1 == d->r || '\0' == *(d->line))
+				return (TRUE);
+			return (FALSE);
 		}
-		data->line = ft_strjoin_f1_f2(data->line, data->aux);
-		data->flag = gnl_isnl(data->line);
+		d->line = ft_strjoin_f1_f2(d->line, d->aux);
+		d->flag = gnl_isnl(d->line);
 	}
-	if ((int) ft_strlen(data->line) != data->flag + TRUE)
+	if ((int) LEN(d->line) != d->flag + TRUE)
 	{
-		gnl_listadd(data, gnl_listnew(data->fd, gnl_substr(data->line,
-			data->flag + 1, ft_strlen(data->line), FALSE)));
-		data->line = gnl_substr(data->line, ZERO, data->flag, TRUE);
+		LADD(d, LNEW(d->fd, gnl_substr(d->line, d->flag + 1, LEN(d->line), 0)));
+		d->line = gnl_substr(d->line, ZERO, d->flag, TRUE);
 	}
+	return (FALSE);
 }
 
 char	*get_next_line(int fd)
@@ -99,6 +94,12 @@ char	*get_next_line(int fd)
 	data.list = (t_list *)&list;
 	data.line = (char *) ft_calloc(TRUE, sizeof(char));
 	gnl_check_fd(&data);
-	gnl_core(&data);
+	data.aux = NULL;
+	data.flag  = gnl_isnl(data.line);
+	if (TRUE == gnl_core(&data))
+	{
+		free(data.line);
+		data.line = NULL;
+	}
 	return (data.line);
 }
