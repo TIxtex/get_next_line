@@ -25,15 +25,7 @@
 
 ## subject
 
-<object data="https://github.com/TIxtex/libft/blob/c673134e4d6b5202ec3594a7e80966dd4c6c568f/es.subject.pdf" type="application/pdf">
-    <embed src="https://github.com/TIxtex/libft/blob/c673134e4d6b5202ec3594a7e80966dd4c6c568f/es.subject.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/TIxtex/libft/blob/c673134e4d6b5202ec3594a7e80966dd4c6c568f/es.subject.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
-<object data="https://github.com/TIxtex/libft/blob/c673134e4d6b5202ec3594a7e80966dd4c6c568f/es.subject.pdf" type="application/pdf">
-    <iframe src="https://github.com/TIxtex/libft/blob/c673134e4d6b5202ec3594a7e80966dd4c6c568f/es.subject.pdf"></iframe>
-</object>
-
+[link_to_subject](./es.subject.pdf)
 
 ## get_next_line_c
 
