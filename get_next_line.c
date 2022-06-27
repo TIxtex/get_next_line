@@ -23,12 +23,12 @@ static void	gnl_listadd(t_data *data, t_list *add)
 	t_list	*prev;
 
 	aux = data->list;
-	while (data->fd < aux->fd && NULL != aux->next)
+	while (data->fd > aux->fd && NULL != aux->next)
 	{
 		prev = aux;
 		aux = aux->next;
 	}
-	if (-1 == aux->fd)
+	if (-1 == aux->fd || NULL == aux->next)
 		aux->next = add;
 	else
 	{
@@ -68,14 +68,14 @@ static int	gnl_core(t_data	*d)
 		if (1 > d->r)
 		{
 			free(d->aux);
-			if (-1 == d->r || '\0' == *(d->line))
+			if ('\0' == *(d->line) || -1 == d->r)
 				return (TRUE);
 			return (FALSE);
 		}
 		d->line = ft_strjoin_f1_f2(d->line, d->aux);
 		d->flag = gnl_isnl(d->line);
 	}
-	if ((int) LEN(d->line) != d->flag + TRUE)
+	if ((int) LEN(d->line) != d->flag + 1)
 	{
 		LADD(d, LNEW(d->fd, gnl_substr(d->line, d->flag + 1, LEN(d->line), 0)));
 		d->line = gnl_substr(d->line, ZERO, d->flag, TRUE);
