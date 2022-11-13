@@ -41,9 +41,10 @@ typedef struct s_data
 	struct s_list	*list;
 	int				fd;
 	int				flag;
-	int				r;
+	int				read_;
 	char			*line;
 	char			*read_line;
+	void			*x;
 }	t_data;
 
 /**	get_next_line	**/
@@ -51,9 +52,9 @@ char	*get_next_line(int fd);
 
 /**	get_next_line_utils	**/
 size_t	ft_strlen(const char *s);
-void	*ft_calloc(size_t num_items, size_t size_item);
+void	*gnl_scalloc(size_t num_items, size_t size_item);
 char	*gnl_substr(char const *s, unsigned int start, size_t len, int flag);
-char	*ft_strjoin_f1_f2(char *s1, char *s2);
+char	*ft_strjoin_f1(char *s1, char *s2);
 int		gnl_isnl(char *str);
 
 #endif
