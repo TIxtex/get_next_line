@@ -30,7 +30,7 @@ static int	gnl_list(t_data *data, int fd, char *content)
 		prev = aux;
 		aux = aux->next;
 	}
-	if (-1 == aux->fd || NULL == aux->next)
+	if (NULL == aux->next || -1 == aux->fd)
 		aux->next = new;
 	else
 	{
@@ -53,7 +53,6 @@ static void	gnl_check_fd(t_data *data)
 	}
 	if (data->fd == aux->fd)
 	{
-//		data->line = ft_strjoin_f1_f2(data->line, aux->content);
 		data->line = aux->content;
 		prev->next = aux->next;
 		free((void *) aux);
@@ -74,17 +73,11 @@ static int	gnl_core(t_data	*d)
 	{
 		d->read_ = read(d->fd, d->read_line, BUFFER_SIZE);
 		if (TRUE > d->read_)
-		{
-			free((void *) d->read_line);
-			if ('\0' == *(d->line) || -1 == d->read_)
-				return (FALSE);
-			return (TRUE);
-		}
+			return (free((void *) d->read_line), FALSE);
 		d->line = ft_strjoin_f1(d->line, d->read_line);
 		d->flag = gnl_isnl(d->line);
 	}
-	free((void *) d->read_line);
-	return (TRUE);
+	return (free((void *) d->read_line), TRUE);
 }
 
 char	*get_next_line(int fd)
@@ -103,7 +96,12 @@ char	*get_next_line(int fd)
 	}
 	else if ((int) ft_strlen(data.line) != data.flag + sizeof(char))
 	{
-		data.x = gnl_substr(data.line, data.flag + 1, ft_strlen(data.line), 0);
+		data.x = gnl_substr(
+			data.line,
+			data.flag + sizeof(char),
+			ft_strlen(data.line),
+			FALSE
+			);
 		if (NULL == data.x || !gnl_list(&data, data.fd, (char *) data.x))
 			return (free((void *) data.line) , NULL);
 		data.line = gnl_substr(data.line, ZERO, data.flag, TRUE);

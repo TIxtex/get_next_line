@@ -38,5 +38,6 @@ int	main(void)
 		fd = f_swap_fd(fd, fd0, fd1, fd2);
 	}
 	printf("--DONE--\n");
+	sleep(200);
 	return (ZERO);
 }

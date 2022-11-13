@@ -65,14 +65,17 @@ char	*ft_strjoin_f1(char *s1, char *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	nw_str = (char *)gnl_scalloc(ft_strlen(s1) + ft_strlen(s2) + sizeof(char), sizeof(char));
+	nw_str = (char *) gnl_scalloc(
+		ft_strlen(s1) + ft_strlen(s2) + sizeof(char),
+		sizeof(char)
+	);
 	if (NULL == nw_str)
 		return (NULL);
 	start = nw_str;
 	to_free = s1;
-	while ('\0' != *s1)
+	while (ZERO != *s1)
 		*(nw_str++) = *(s1++);
-	while ('\0' != *s2)
+	while (ZERO != *s2)
 		*(nw_str++) = *(s2++);
 	free((void *) to_free);
 	to_free = NULL;
@@ -84,7 +87,7 @@ int	gnl_isnl(char *str)
 	register int	index;
 
 	index = -1;
-	while ('\0' != str[++index])
+	while (ZERO != str[++index])
 		if ('\n' == str[index] || '\r' == str[index])
 			return (index);
 	return (-1);

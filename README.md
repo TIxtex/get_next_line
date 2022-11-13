@@ -19,6 +19,7 @@
 # table of contents
 
 - [get_next_line](#get_next_line)
+- [table of contents](#table-of-contents)
   - [subject](#subject)
   - [get_next_line_c](#get_next_line_c)
   - [get_next_line_utils_c](#get_next_line_utils_c)
@@ -37,8 +38,8 @@ char    *get_next_line(int fd);
 
 ```C
 size_t  ft_strlen(const char *s);
-void    *ft_calloc(size_t num_items, size_t size_item);
+void    *gnl_scalloc(size_t num_items, size_t size_item);
 char    *gnl_substr(char const *s, unsigned int start, size_t len, int flag);
-char    *ft_strjoin_f1_f2(char *s1, char *s2);
-int      gnl_isnl(char *str);
+char    *ft_strjoin_f1(char *s1, char *s2);
+int     gnl_isnl(char *str);
 ```
