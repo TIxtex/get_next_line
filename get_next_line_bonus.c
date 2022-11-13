@@ -101,10 +101,11 @@ char	*get_next_line(int fd)
 		free((void *) data.line);
 		data.line = NULL;
 	}
-	else if ((int) ft_strlen(data.line) != data.flag + 1)
+	else if ((int) ft_strlen(data.line) != data.flag + sizeof(char))
 	{
 		data.x = gnl_substr(data.line, data.flag + 1, ft_strlen(data.line), 0);
-		gnl_list(&data, data.fd, (char *) data.x);
+		if (NULL == data.x || !gnl_list(&data, data.fd, (char *) data.x))
+			return (free((void *) data.line) , NULL);
 		data.line = gnl_substr(data.line, ZERO, data.flag, TRUE);
 	}
 	return (data.line);
