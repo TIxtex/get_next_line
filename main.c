@@ -24,7 +24,7 @@ int	main(void)
 	register int	fd2;
 
 
-	fd0 = open("./get_next_line.c", O_RDONLY);
+	fd0 = open("./43_no_nl", O_RDONLY);
 	fd1 = open("./get_next_line_utils.c", O_RDONLY);
 	fd2 = open("./get_next_line.h", O_RDONLY);
 	fd = fd0;
@@ -35,7 +35,7 @@ int	main(void)
 		printf("line:%s\n", line);
 		free(line);
 		line = NULL;
-		fd = f_swap_fd(fd, fd0, fd1, fd2);
+//		fd = f_swap_fd(fd, fd0, fd1, fd2);
 	}
 	printf("--DONE--\n");
 	sleep(200);

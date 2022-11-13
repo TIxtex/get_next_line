@@ -72,8 +72,15 @@ static int	gnl_core(t_data	*d)
 	while (-1 == d->flag)
 	{
 		d->read_ = read(d->fd, d->read_line, BUFFER_SIZE);
+		d->read_line[d->read_] = '\0';
 		if (TRUE > d->read_)
-			return (free((void *) d->read_line), FALSE);
+		{
+			d->flag = ft_strlen(d->line) - TRUE;
+			free((void *) d->read_line);
+			if ('\0' == *(d->line) || -1 == d->read_)
+				return (FALSE);
+			return (TRUE);
+		}
 		d->line = ft_strjoin_f1(d->line, d->read_line);
 		d->flag = gnl_isnl(d->line);
 	}
